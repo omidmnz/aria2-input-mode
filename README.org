@@ -1,0 +1,15 @@
+#+title: Major Mode for Aria2 Input Files
+
+A major mode based on =outline-mode= for Aria2's input files.
+
+You can install it using the following recipe:
+#+begin_src emacs-lisp
+  (use-package quint-ts-mode
+    :vc (:url "https://github.com/omidmnz/aria2-input-mode.git"))
+#+end_src
+
+To use it, you can simply use the following line as the first line in
+your file:
+#+begin_quote
+### -*- mode: aria2-input; -*-
+#+end_quote
