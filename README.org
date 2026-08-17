@@ -1,7 +1,8 @@
 #+title: Major Mode for Aria2 Input Files
 
-A major mode based on =outline-mode= for Aria2's input files.
+A major mode based on =outline-mode= for Aria2's [[https://aria2.github.io/manual/en/html/aria2c.html#input-file][input files]].
 
+* Installation
 You can install it using the following recipe:
 #+begin_src emacs-lisp
   (use-package quint-ts-mode
@@ -13,3 +14,26 @@ your file:
 #+begin_quote
 ### -*- mode: aria2-input; -*-
 #+end_quote
+
+* Features
+Syntax highlighting and basic auto-completion is provided for the
+documented options, as well as hash names in =checksum=<hash-name>=.
+
+The hash values are only highlighted when the hash value matches the
+format, e.g. 40 hex digits for =sha-1=, 32 hex digits for =md5=, etc. You
+can use the following to see the available hash algorithms for your
+installed version:
+#+begin_src bash :results list :wrap org :cache yes
+  aria2c -v | grep "Hash Algorithms" | cut -d: -f2 | sed -Ee 's/^ +//g' -e 's/ +/\n/g' | sed -Ee 's/,$//'
+#+end_src
+
+#+RESULTS[568816cc47f761bf93dfbf5716bcfefac9910f2f]:
+#+begin_org
+- sha-1
+- sha-224
+- sha-256
+- sha-384
+- sha-512
+- md5
+- adler32
+#+end_org

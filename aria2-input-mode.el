@@ -156,7 +156,9 @@
     ("sha-512" . (repeat 128 xdigit))
     ("md5"     . (repeat 32 xdigit))
     ("adler32" . (repeat 8 xdigit)))
-  "Aria2's supported hashing algorithms.")
+  "Aria2's supported hashing algorithms.
+You can check for supported hash algorithms using
+`aria2c -v | grep \"Hash Algorithms\"'")
 
 (defvar aria2-input-keywords-rx
   (rx-to-string
