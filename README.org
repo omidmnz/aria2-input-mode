@@ -23,12 +23,11 @@ The hash values are only highlighted when the hash value matches the
 format, e.g. 40 hex digits for =sha-1=, 32 hex digits for =md5=, etc. You
 can use the following to see the available hash algorithms for your
 installed version:
-#+begin_src bash :results list :wrap org :cache yes
+#+begin_src bash :results list :cache yes
   aria2c -v | grep "Hash Algorithms" | cut -d: -f2 | sed -Ee 's/^ +//g' -e 's/ +/\n/g' | sed -Ee 's/,$//'
 #+end_src
 
-#+RESULTS[568816cc47f761bf93dfbf5716bcfefac9910f2f]:
-#+begin_org
+#+RESULTS[ff5d5a4914502089e2fb728c077700f6fbb4cc18]:
 - sha-1
 - sha-224
 - sha-256
@@ -36,4 +35,3 @@ installed version:
 - sha-512
 - md5
 - adler32
-#+end_org
