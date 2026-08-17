@@ -190,12 +190,45 @@
     (,aria2-input-hash-names-rx 1 font-lock-builtin-face)
     (,aria2-input-hash-values-rx 2 font-lock-builtin-face)))
 
+;;; Auto-completion
+
+(defconst thing-at-point-kebab-regexp
+  (rx (seq bow (1+ (in "-" letter digit))))
+  "A regular expression mathing a kebab-case word.")
+
+(put 'kebab 'bounds-of-thing-at-point
+     (lambda ()
+       (let ((thing (thing-at-point-looking-at
+                     thing-at-point-kebab-regexp 500)))
+         (if thing
+             (let ((beginning (match-beginning 0))
+                   (end (match-end 0)))
+               (cons beginning end))))))
+
+(put 'kebab 'thing-at-point
+     (lambda ()
+       (let ((boundary-pair (bounds-of-thing-at-point 'kebab)))
+         (if boundary-pair
+             (buffer-substring-no-properties
+              (car boundary-pair) (cdr boundary-pair))))))
+
+(defun aria2-input-completion ()
+  "This is the function to be used for the hook `completion-at-point-functions'."
+  (interactive)
+  (pcase-let ((`(,start . ,end) (bounds-of-thing-at-point 'kebab)))
+    (if (save-excursion
+          (beginning-of-line)
+          (looking-at (rx (seq bol (1+ space) "checksum="))))
+        (list start end (mapcar #'car aria2-input-hash-rx-alist) . nil)
+      (list start end aria2-input-keywords . nil))))
+
 ;;;###autoload
 (define-derived-mode aria2-input-mode
   outline-mode "Aria2"
   "Major mode for Aria2's input files."
   (setq-local comment-start "#")
   (setq-local outline-regexp (rx (1+ (in "#" ?\f))))
+  (add-hook 'completion-at-point-functions 'aria2-input-completion nil 'local)
   (font-lock-add-keywords 'aria2-input-mode aria2-input-keywords-lock)
 
   ;; Fontify the current buffer
